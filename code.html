@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FleetFlow | Operational Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e1e2ed",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#d3e4fe",
+                    "primary-fixed": "#dbe1ff",
+                    "outline-variant": "#c3c6d7",
+                    "inverse-primary": "#b4c5ff",
+                    "inverse-surface": "#2e3039",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#0b1c30",
+                    "surface-dim": "#d9d9e5",
+                    "surface-variant": "#e1e2ed",
+                    "on-secondary-container": "#54647a",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed-variant": "#38485d",
+                    "inverse-on-surface": "#f0f0fb",
+                    "on-error": "#ffffff",
+                    "surface-container": "#ededf9",
+                    "surface-container-high": "#e7e7f3",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-primary-container": "#eeefff",
+                    "background": "#faf8ff",
+                    "secondary-fixed-dim": "#b7c8e1",
+                    "on-tertiary-fixed-variant": "#44474a",
+                    "primary": "#004ac6",
+                    "on-surface": "#191b23",
+                    "tertiary-fixed-dim": "#c4c7ca",
+                    "on-tertiary-container": "#eff1f4",
+                    "on-surface-variant": "#434655",
+                    "on-tertiary-fixed": "#191c1e",
+                    "on-background": "#191b23",
+                    "surface": "#faf8ff",
+                    "tertiary-fixed": "#e0e3e6",
+                    "surface-container-low": "#f3f3fe",
+                    "tertiary-container": "#6b6e70",
+                    "primary-container": "#2563eb",
+                    "surface-tint": "#0053db",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-bright": "#faf8ff",
+                    "tertiary": "#525658",
+                    "secondary": "#505f76",
+                    "outline": "#737686",
+                    "on-primary-fixed": "#00174b",
+                    "secondary-container": "#d0e1fb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "40px",
+                    "stack-sm": "8px",
+                    "container-max": "1440px",
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "gutter": "24px",
+                    "stack-md": "16px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "display-xl": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "headline-lg-mobile": ["Geist"],
+                    "body-md": ["Inter"],
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-lg": ["Geist"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Geist"],
+                    "data-numeric": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "data-numeric": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #F7F9FC; }
+        .glass-nav { backdrop-filter: blur(20px) saturate(150%); }
+        .pulse-green { animation: pulse-green 2s infinite; }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        .pulse-red { animation: pulse-red 2s infinite; }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-3 w-full rounded-full mt-4 mx-auto max-w-[95%] glass-nav bg-white/70 shadow-lg transition-all">
+<div class="flex items-center gap-8">
+<span class="font-display-xl text-headline-md font-bold text-primary">FleetFlow</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-primary font-bold border-b-2 border-primary font-label-caps text-label-caps py-1" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-label-caps text-label-caps py-1" href="#">Fleet</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-label-caps text-label-caps py-1" href="#">Shipments</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-label-caps text-label-caps py-1" href="#">Tracking</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-label-caps text-label-caps py-1" href="#">Analytics</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer p-2 rounded-full hover:bg-surface-container-low transition-all">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</div>
+<img alt="User Profile" class="w-10 h-10 rounded-full border-2 border-white shadow-sm" data-alt="Professional headshot of a fleet operations manager with a confident and focused expression, set against a blurred modern office background with soft blue and white lighting, maintaining a premium and minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDamybHvA-VEFS-OoAqmMh-EAnf0hFhRavz_sx0qNxUBIXuQWEByjXu7b5fzRM3KfqLVPHHcLMwUz5yfWpvPOysMBbIEU4YeuWtyfx2WnKWpNAdLk9k73c8_myVix3LBMmyvkSXSp_CiLz7943GIvI3C721v_q3TiyyJyyHFhnZJpxCFN7bG0G5NNR4-fgx3qVpIha_bRt9xRfZUCoxi7u3AM_kO_c10-ZjQz7o4fwe_BNXCPv_dev34A"/>
+</div>
+</nav>
+<!-- Side Navigation (Desktop Only) -->
+<aside class="fixed left-0 top-0 h-full hidden lg:flex flex-col p-6 z-40 w-72 bg-surface-container-low shadow-md pt-28">
+<div class="mb-8">
+<h2 class="font-headline-md text-headline-md text-primary mb-1">Operations</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Active: 1,284 Vehicles</p>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<button class="flex items-center gap-4 p-3 bg-primary-container text-on-primary-container rounded-lg font-semibold transition-all">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-body-md text-body-md">Map View</span>
+</button>
+<button class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-lg transition-transform hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-body-md text-body-md">Fleet Health</span>
+</button>
+<button class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-lg transition-transform hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined" data-icon="person_pin">person_pin</span>
+<span class="font-body-md text-body-md">Driver Performance</span>
+</button>
+<button class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-lg transition-transform hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined" data-icon="settings_suggest">settings_suggest</span>
+<span class="font-body-md text-body-md">Maintenance</span>
+</button>
+<button class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-lg transition-transform hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="font-body-md text-body-md">Reports</span>
+</button>
+</div>
+<button class="mt-4 bg-primary text-white py-3 px-4 rounded-xl font-semibold shadow-lg hover:bg-primary/90 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add_circle</span>
+            New Shipment
+        </button>
+<div class="mt-8 pt-6 border-t border-outline-variant flex flex-col gap-2">
+<button class="flex items-center gap-4 p-2 text-on-surface-variant hover:text-on-surface transition-all">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</button>
+<button class="flex items-center gap-4 p-2 text-on-surface-variant hover:text-on-surface transition-all">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-body-sm text-body-sm">Help</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="lg:ml-72 pt-32 px-8 pb-12">
+<!-- Top Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-stack-lg">
+<!-- Metric 1 -->
+<div class="bg-white p-stack-md rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.06)] border border-white hover:shadow-[0px_10px_25px_rgba(0,0,0,0.08)] transition-all">
+<div class="flex items-center justify-between mb-4">
+<span class="p-2 bg-emerald-100 text-emerald-700 rounded-lg material-symbols-outlined">health_and_safety</span>
+<span class="text-emerald-600 font-data-numeric text-data-numeric">+2.4%</span>
+</div>
+<h3 class="text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Fleet Health Score</h3>
+<p class="font-headline-lg text-headline-lg mt-1">98%</p>
+</div>
+<!-- Metric 2 -->
+<div class="bg-white p-stack-md rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.06)] border border-white hover:shadow-[0px_10px_25px_rgba(0,0,0,0.08)] transition-all">
+<div class="flex items-center justify-between mb-4">
+<span class="p-2 bg-blue-100 text-blue-700 rounded-lg material-symbols-outlined">local_shipping</span>
+<span class="text-blue-600 font-data-numeric text-data-numeric">+12</span>
+</div>
+<h3 class="text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Active Deliveries</h3>
+<p class="font-headline-lg text-headline-lg mt-1">428</p>
+</div>
+<!-- Metric 3 -->
+<div class="bg-white p-stack-md rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.06)] border border-white hover:shadow-[0px_10px_25px_rgba(0,0,0,0.08)] transition-all">
+<div class="flex items-center justify-between mb-4">
+<span class="p-2 bg-surface-container-highest text-primary rounded-lg material-symbols-outlined">route</span>
+<span class="text-on-surface-variant font-data-numeric text-data-numeric">Stable</span>
+</div>
+<h3 class="text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Vehicles on Road</h3>
+<p class="font-headline-lg text-headline-lg mt-1">1,242</p>
+</div>
+<!-- Metric 4 -->
+<div class="bg-white p-stack-md rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.06)] border border-white hover:shadow-[0px_10px_25px_rgba(0,0,0,0.08)] transition-all">
+<div class="flex items-center justify-between mb-4">
+<span class="p-2 bg-red-100 text-red-700 rounded-lg material-symbols-outlined">warning</span>
+<span class="text-red-600 font-data-numeric text-data-numeric">-2</span>
+</div>
+<h3 class="text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Delayed Shipments</h3>
+<p class="font-headline-lg text-headline-lg mt-1">4</p>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-gutter">
+<!-- Centerpiece: Live Fleet Map -->
+<div class="lg:w-[68%] relative h-[600px] bg-surface-container rounded-3xl shadow-lg overflow-hidden border border-white">
+<!-- Map Background Placeholder -->
+<div class="absolute inset-0 z-0 bg-cover bg-center" data-alt="A high-fidelity minimalist digital map of a modern metropolitan area like San Francisco or New York, styled with a clean light-mode aesthetic using soft grays, whites, and blues. The map features detailed street grids, parks, and water bodies, providing a professional and technical background for a logistics dashboard." data-location="San Francisco" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAt6z6DsTBOBQD2A9_iDaQWw2aMghtU2KoNZiQoFwdogtBvfpsiMzFA_jeAlsbNgQoyW2oFWEJ5_MgaxwPFMtMj6k3DQ7uRIq2gogIhSyafGh0FUROtr2C0j-7BjP43IRDH5jyDMCraUZMp0luwWEgOUddRV6fEWQxHOkCeKQn1sqLDr9eJYo2_Qb0QiWG5wqTmPWrhEzKpiT4t-wt4K5Asdb41ceJUjxpkTSTyifie49bW5kVNpYG5MQ')"></div>
+<!-- Map Overlay Elements -->
+<div class="absolute top-6 left-6 z-10 flex gap-2">
+<button class="bg-white px-4 py-2 rounded-full shadow-md text-body-sm font-medium flex items-center gap-2 hover:bg-surface-container-low transition-all">
+<span class="w-2 h-2 bg-emerald-500 rounded-full"></span> All Vehicles
+                    </button>
+<button class="bg-white/80 backdrop-blur px-4 py-2 rounded-full shadow-md text-body-sm font-medium flex items-center gap-2 hover:bg-white transition-all">
+                         Alerts Only
+                    </button>
+</div>
+<!-- Vehicle Markers -->
+<!-- Marker 1 (Green - Active) -->
+<div class="absolute top-1/3 left-1/4 z-20 cursor-pointer group">
+<div class="w-4 h-4 bg-emerald-500 rounded-full border-2 border-white shadow-lg pulse-green"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+<p class="font-data-numeric text-xs font-bold">TRK-8829</p>
+</div>
+</div>
+<!-- Marker 2 (Red - Delayed) -->
+<div class="absolute top-1/2 right-1/3 z-20 cursor-pointer group">
+<div class="w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-lg pulse-red"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+<p class="font-data-numeric text-xs font-bold text-red-600">TRK-9114 (DELAYED)</p>
+</div>
+</div>
+<!-- Marker 3 (Yellow - Warning) -->
+<div class="absolute bottom-1/4 left-1/2 z-20 cursor-pointer group">
+<div class="w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-lg"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+<p class="font-data-numeric text-xs font-bold">TRK-4450</p>
+</div>
+</div>
+<!-- Floating Info Card: Selected Vehicle -->
+<div class="absolute bottom-6 right-6 z-30 w-80 bg-white/95 backdrop-blur-xl p-6 rounded-2xl shadow-2xl border border-white/50">
+<div class="flex items-center gap-4 mb-4">
+<img alt="Driver photo" class="w-12 h-12 rounded-full object-cover border border-outline-variant" data-alt="A close-up portrait of a professional male logistics driver in a clean branded polo shirt. He is smiling warmly with a reliable and friendly expression. The background is a brightly lit, clean white interior, emphasizing a premium light-mode UI style with soft, natural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEJkuv_FhRWvzbIC4nNKxIP_ZUBV3m3oSoZifcPv8YsTK38BfUruWUlKzYfIJV2wvE_vK0e6UjozTtaXUFNECghrpFmq-7ySU9xL_EK1NSqAyySGqVeII3KloAY4NPndf-zakCZ5sm_V3Jy0dbVKP5vsloxevZbF9J89T9ldt1NEYFkPNF0U1Rs_1_rG0ZtB2M1ptizdiXornkfdt6VI4cvQDV1CN64sR25k-lqb04a_MRL04S_fOgwQ"/>
+<div>
+<h4 class="font-headline-md text-body-md font-bold">Marcus Chen</h4>
+<p class="text-on-surface-variant font-data-numeric text-xs">Vehicle ID: TRK-8829</p>
+</div>
+<span class="ml-auto material-symbols-outlined text-on-surface-variant cursor-pointer">open_in_new</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-surface-container-low p-3 rounded-xl">
+<p class="text-[10px] uppercase text-on-surface-variant font-label-caps mb-1">Speed</p>
+<p class="font-data-numeric text-body-md font-bold">65 mph</p>
+</div>
+<div class="bg-surface-container-low p-3 rounded-xl">
+<p class="text-[10px] uppercase text-on-surface-variant font-label-caps mb-1">ETA</p>
+<p class="font-data-numeric text-body-md font-bold">20m</p>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center text-xs font-medium">
+<span class="text-on-surface-variant">Progress to San Jose</span>
+<span class="text-primary">82%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-1000" style="width: 82%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Live Activity Feed -->
+<div class="flex-grow bg-white rounded-3xl shadow-lg border border-white flex flex-col h-[600px] overflow-hidden">
+<div class="p-6 border-b border-surface-variant flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md">Live Activity</h3>
+<span class="material-symbols-outlined text-primary">sensors</span>
+</div>
+<div class="flex-grow overflow-y-auto p-4 space-y-4 custom-scrollbar">
+<!-- Feed Item 1 -->
+<div class="p-4 rounded-2xl hover:bg-surface-container-low transition-all border border-transparent hover:border-surface-variant group">
+<div class="flex gap-4">
+<div class="mt-1 w-2 h-2 rounded-full bg-red-500 shrink-0"></div>
+<div>
+<p class="text-body-sm font-semibold mb-1">Critical Delay: TRK-9114</p>
+<p class="text-xs text-on-surface-variant mb-2">Mechanical alert triggered. Maintenance dispatched to I-95 North.</p>
+<span class="text-[10px] text-on-surface-variant font-data-numeric bg-surface-container p-1 rounded">2 mins ago</span>
+</div>
+</div>
+</div>
+<!-- Feed Item 2 -->
+<div class="p-4 rounded-2xl hover:bg-surface-container-low transition-all border border-transparent hover:border-surface-variant group">
+<div class="flex gap-4">
+<div class="mt-1 w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
+<div>
+<p class="text-body-sm font-semibold mb-1">Delivery Success</p>
+<p class="text-xs text-on-surface-variant mb-2">TRK-4421 completed delivery #SO-10294 in Seattle Hub.</p>
+<span class="text-[10px] text-on-surface-variant font-data-numeric bg-surface-container p-1 rounded">14 mins ago</span>
+</div>
+</div>
+</div>
+<!-- Feed Item 3 -->
+<div class="p-4 rounded-2xl hover:bg-surface-container-low transition-all border border-transparent hover:border-surface-variant group">
+<div class="flex gap-4">
+<div class="mt-1 w-2 h-2 rounded-full bg-blue-500 shrink-0"></div>
+<div>
+<p class="text-body-sm font-semibold mb-1">Route Optimized</p>
+<p class="text-xs text-on-surface-variant mb-2">AI recalculated route for West Coast cluster due to weather.</p>
+<span class="text-[10px] text-on-surface-variant font-data-numeric bg-surface-container p-1 rounded">32 mins ago</span>
+</div>
+</div>
+</div>
+<!-- Feed Item 4 -->
+<div class="p-4 rounded-2xl hover:bg-surface-container-low transition-all border border-transparent hover:border-surface-variant group">
+<div class="flex gap-4">
+<div class="mt-1 w-2 h-2 rounded-full bg-yellow-500 shrink-0"></div>
+<div>
+<p class="text-body-sm font-semibold mb-1">Driver Shift Change</p>
+<p class="text-xs text-on-surface-variant mb-2">12 drivers ending shifts. Night crew handovers in progress.</p>
+<span class="text-[10px] text-on-surface-variant font-data-numeric bg-surface-container p-1 rounded">1 hour ago</span>
+</div>
+</div>
+</div>
+<!-- Feed Item 5 -->
+<div class="p-4 rounded-2xl hover:bg-surface-container-low transition-all border border-transparent hover:border-surface-variant group">
+<div class="flex gap-4">
+<div class="mt-1 w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
+<div>
+<p class="text-body-sm font-semibold mb-1">Maintenance Cleared</p>
+<p class="text-xs text-on-surface-variant mb-2">TRK-5502 is back in service after successful inspection.</p>
+<span class="text-[10px] text-on-surface-variant font-data-numeric bg-surface-container p-1 rounded">2 hours ago</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low">
+<button class="w-full py-2 text-xs font-bold text-primary font-label-caps uppercase tracking-widest hover:underline">View Full Logs</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation for Mobile -->
+<div class="fixed bottom-0 left-0 right-0 h-16 bg-white/80 backdrop-blur-xl border-t border-surface-variant flex md:hidden items-center justify-around z-50">
+<button class="flex flex-col items-center text-primary">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium">Home</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">map</span>
+<span class="text-[10px] font-medium">Map</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="text-[10px] font-medium">Fleet</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</button>
+</div>
+<script>
+        // Micro-interactions and UI Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hover effect for metrics
+            const metrics = document.querySelectorAll('.grid > div');
+            metrics.forEach(metric => {
+                metric.addEventListener('mouseenter', () => {
+                    metric.style.transform = 'translateY(-4px)';
+                });
+                metric.addEventListener('mouseleave', () => {
+                    metric.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Simulate Live Feed updates occasionally
+            setInterval(() => {
+                const feed = document.querySelector('.overflow-y-auto');
+                const firstItem = feed.querySelector('div');
+                const newItem = firstItem.cloneNode(true);
+                newItem.querySelector('span.text-\\[10px\\]').textContent = 'Just now';
+                newItem.style.opacity = '0';
+                newItem.style.transform = 'translateY(-10px)';
+                feed.prepend(newItem);
+                
+                setTimeout(() => {
+                    newItem.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                    newItem.style.opacity = '1';
+                    newItem.style.transform = 'translateY(0)';
+                }, 100);
+                
+                if(feed.children.length > 8) {
+                    feed.removeChild(feed.lastElementChild);
+                }
+            }, 15000);
+        });
+    </script>
+</body></html>
