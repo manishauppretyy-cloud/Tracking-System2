@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Tracking-System2/static/css/main.d973772f.css",
+    "main.js": "/Tracking-System2/static/js/main.9a162127.js",
+    "index.html": "/Tracking-System2/index.html",
+    "main.d973772f.css.map": "/Tracking-System2/static/css/main.d973772f.css.map",
+    "main.9a162127.js.map": "/Tracking-System2/static/js/main.9a162127.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d973772f.css",
+    "static/js/main.9a162127.js"
+  ]
+}
